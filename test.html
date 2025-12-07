@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+<style>
+.js-reading-words {
+    font-size: 28px;
+    line-height: 1.4;
+    margin: 100vh 0;
+    color: #d3d0d0;
+}
+.word {
+    display: inline-block;
+    padding-right: 4px;
+    color: #d3d0d0;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</head>
+<body>
+    <h1 class="js-reading-words">
+    Toto je pokročilý.
+    </h1>
+<p class="js-reading-words">
+    Toto je pokročilý čtecí efekt, kde se barví každé slovo zvlášť podle scrollu.
+    Toto je pokročilý čtecí efekt, kde se barví každé slovo zvlášť podle scrollu.
+    Toto je pokročilý čtecí efekt, kde se barví každé slovo zvlášť podle scrollu.
+</p>
+<p class="js-reading-words">
+    Toto je pokročilý čtecí efekt, kde se barví každé slovo zvlášť podle scrollu.
+</p>
+<p class="js-reading-words">
+    Toto je pokročilý čtecí efekt, kde se barví každé slovo zvlášť podle scrollu.
+</p>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// Najdeme všechny odstavce určené pro animaci
+gsap.utils.toArray(".js-reading-words").forEach(paragraph => {
+
+    // 1) Rozdělíme text na jednotlivá slova
+    const words = paragraph.textContent.trim().split(" ");
+    paragraph.textContent = ""; // vyprázdníme
+
+    words.forEach((word, index) => {
+        const span = document.createElement("span");
+        span.classList.add("word");
+        span.textContent = word;
+        paragraph.appendChild(span);
+
+        // přidáme mezeru mezi slova (kromě posledního)
+        if (index < words.length - 1) {
+            paragraph.appendChild(document.createTextNode(" "));
+        }
+    });
+
+    // 2) Animace každého slova zvlášť
+    gsap.utils.toArray(paragraph.querySelectorAll(".word")).forEach((wordEl, i) => {
+
+        gsap.fromTo(
+            wordEl,
+            { color: "#d3d0d0" },
+            {
+                color: "#000000",
+                scrollTrigger: {
+                    trigger: paragraph,
+                    start: () => "top+=" + (i * 10) + " 80%", 
+                    end: () => "top+=" + (i * 10) + " 60%",
+                    scrub: true,
+                    markers: false  // nastav na true, a uvidíš průběh
+                }
+            }
+        );
+
+    });
+
+});
+</script>
+</body>
+</html>

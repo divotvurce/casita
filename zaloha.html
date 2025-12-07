@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxusní Ubytování - Finální Verze</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        /* Základní styly pro font a pozadí */
+        @import url('https://fonts.googleapis.com/css2?family=Varela&display=swap');
+        
+        /* Barvy pro text a pozadí s texturou */
+        :root {
+            --color-primary: #000000;
+            --color-secondary: #f8f8f8;
+            --color-text: #4a5568;
+            --color-highlight: #757575;
+        }
+
+        body {
+            background-color: var(--color-secondary);
+            background-image: url('texture3.png');
+            background-repeat: repeat;
+            background-size: 400px;
+            background-attachment: fixed;
+            font-family: "Varela", sans-serif;
+            color: var(--color-primary);
+        }
+
+        /* Hero sekce a CTA */
+        .hero-section {
+            background-image: url('casitanight.jpg'); /* Nahraďte vlastním obrázkem */
+            background-size: cover;
+            background-position: center;
+        }
+
+        .cta-section {
+            background-image: url('https://picsum.photos/1920/1080?random=6');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        /* Styly pro "Nutrad" sekci - zachování mřížky */
+        .collage-section {
+            width: 100%;
+            padding: 6rem 2rem;
+        }
+
+        .collage-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, auto);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .collage-text-block {
+            grid-column: 2 / 4;
+            grid-row: 2 / 4;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 10;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .collage-text-block h2 {
+            font-size: 2.25rem;
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+        }
+
+        .collage-text-block p {
+            font-size: 1.125rem;
+            line-height: 1.6;
+            max-width: 450px;
+            color: var(--color-text);
+        }
+
+        .collage-image-item {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+        }
+
+        .collage-image-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Konkrétní umístění jednotlivých obrázků v mřížce */
+        .collage-img-1 { grid-column: 1 / 3; grid-row: 1 / 3; }
+        .collage-img-2 { grid-column: 3 / 5; grid-row: 1 / 2; }
+        .collage-img-3 { grid-column: 4 / 5; grid-row: 2 / 4; }
+        .collage-img-4 { grid-column: 1 / 2; grid-row: 3 / 5; }
+        .collage-img-5 { grid-column: 2 / 4; grid-row: 4 / 5; }
+        .collage-text-block { grid-column: 2 / 4; grid-row: 2 / 4; }
+
+        /* === STYLY PRO ANIMACI NADPISŮ (BLUR-IN) - OPRAVENO === */
+        .split-text-headline {
+            /* Kompenzace paddingu na wrapperu, aby se řádek neposunul */
+            margin-top: -0.2em;
+            margin-bottom: -0.2em; 
+
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            line-height: 1.1; 
+        }
+        .word-wrapper {
+            /* Wrapper vytváří masku pro slide-up efekt */
+            display: inline-block;
+            overflow: hidden;
+            line-height: 1.1;
+            /* Přidává svislý prostor pro písmena zasahující pod řádek (j, g, y) */
+            padding-top: 0.2em; 
+            padding-bottom: 0.2em; 
+        }
+        .word-span {
+            /* Element, který se bude animovat (slide a blur) */
+            display: inline-block;
+        }
+
+        /* Media query pro responzivitu koláže */
+        @media (max-width: 768px) {
+            .collage-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: auto;
+                gap: 1rem;
+            }
+            .collage-img-1 { grid-column: 1 / 3; grid-row: 1 / 2; }
+            .collage-text-block { grid-column: 1 / 3; grid-row: 2 / 3; }
+            .collage-img-2 { grid-column: 1 / 2; grid-row: 3 / 4; }
+            .collage-img-3 { grid-column: 2 / 3; grid-row: 3 / 4; }
+            .collage-img-4 { grid-column: 1 / 2; grid-row: 4 / 5; }
+            .collage-img-5 { grid-column: 2 / 3; grid-row: 4 / 5; }
+        }
+    </style>
+</head>
+<body>
+
+<header id="main-header" class="absolute top-0 left-0 w-full z-50 p-6 flex justify-between items-center transition-colors duration-500">
+    <img src="colombia1-white.png" alt="Logo" class="logo h-8">
+    <button id="menu-toggle" class="z-50 w-12 h-12 flex justify-center items-center">
+        <div class="hamburger w-8 h-8 relative cursor-pointer">
+            <span class="block absolute w-full h-1 bg-white top-0 transition-all duration-300"></span>
+            <span class="block absolute w-full h-1 bg-white top-1/2 -translate-y-1/2 transition-all duration-300"></span>
+            <span class="block absolute w-full h-1 bg-white bottom-0 transition-all duration-300"></span>
+        </div>
+    </button>
+</header>
+
+<div id="side-menu" class="fixed right-0 top-0 h-full w-full md:w-[30%] bg-white z-40 flex flex-col justify-between shadow-lg p-8">
+    <nav class="w-full mt-24">
+        <ul class="text-center">
+            <li><a href="#" class="menu-item text-black text-4xl md:text-5xl mb-8 block">O nás</a></li>
+            <li><a href="#" class="menu-item text-black text-4xl md:text-5xl mb-8 block">Galerie</a></li>
+            <li><a href="#" class="menu-item text-black text-4xl md:text-5xl mb-8 block">Služby</a></li>
+            <li><a href="#" class="menu-item text-black text-4xl md:text-5xl mb-8 block">Kontakt</a></li>
+        </ul>
+    </nav>
+    <div class="mt-12 text-center pb-8">
+        <a href="#cta-section" class="inline-block bg-black text-white py-3 px-8 text-lg font-bold hover:bg-gray-800 transition-colors duration-300">
+            Zarezervovat termín
+        </a>
+        <img src="colombia1-black.png" alt="Logo" class="logo h-5 mt-4 mx-auto">
+    </div>
+</div>
+
+<section id="hero" class="hero-section relative h-screen flex flex-col justify-center items-center text-center text-white">
+    <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+    <h1 id="hero-title" class="split-text-headline text-5xl md:text-7xl lg:text-8xl z-10 text-white">Jedinečný zážitek</h1>
+    <p class="hero-subtitle text-lg md:text-xl lg:text-2xl mt-4 z-10 text-white">Odpočiňte si v srdci přírody</p>
+    <a href="#cta-section" class="hero-cta absolute bottom-8 right-8 z-10 inline-block bg-white text-black py-3 px-8 text-lg font-bold hover:bg-gray-800 hover:text-white transition-colors duration-300">Zarezervovat termín</a>
+</section>
+
+<section id="section2" class="py-24 px-8 md:px-24 flex flex-col md:flex-row items-center justify-between space-y-12 md:space-y-0 md:space-x-16">
+    <div class="md:w-1/2 text-black">
+        <h2 class="split-text-headline text-4xl mb-6">Klid, inspirace, luxus.</h2>
+        <p class="section-text text-lg leading-relaxed">Vila s dechberoucím výhledem, kde se každý detail snoubí s přírodou. Přijďte si vychutnat dokonalý klid a nechte se unést atmosférou, která vás nabije energií.</p>
+    </div>
+    <div class="md:w-1/2 relative overflow-hidden">
+        <img src="stromy.jpg" alt="Elegantní interiér" class="smooth-image w-full h-auto object-cover">
+    </div>
+</section>
+
+
+<section id="section4-quote1" class="py-32 px-8 md:px-24 bg-transparent text-center">
+    <blockquote class="reveal-heading text-4xl md:text-6xl varela-regular text-black">"Kouzelné místo na odpočinek jen pro Vás"</blockquote>
+</section>
+
+
+<section id="collage-section" class="collage-section">
+    <div class="collage-grid">
+        <div class="collage-text-block">
+            <h2 class="reveal-heading text-2xl md:text-3xl">Harmonie designu a přírody</h2>
+            <p>V roce 2025 jsme otevřeli dveře do světa, kde se moderní architektura snoubí s nedotčenou krajinou. Objevte prostor navržený pro dokonalý odpočinek a inspiraci.</p>
+        </div>
+        
+        <div class="collage-image-item collage-img-1 overflow-hidden">
+            <img src="400x600.jpg" alt="Detail architektury" class="smooth-image">
+        </div>
+        <div class="collage-image-item collage-img-2 overflow-hidden">
+            <img src="400x300.jpg" alt="Dřevěné trámy" class="smooth-image">
+        </div>
+        <div class="collage-image-item collage-img-3 overflow-hidden">
+            <img src="600x300.jpg" alt="Interiér dílny" class="smooth-image">
+        </div>
+        <div class="collage-image-item collage-img-4 overflow-hidden">
+            <img src="600x400.jpg" alt="Mramorová deska" class="smooth-image">
+        </div>
+        <div class="collage-image-item collage-img-5 overflow-hidden">
+            <img src="300x300.jpg" alt="Skleněné tabule" class="smooth-image">
+        </div>
+    </div>
+</section>
+
+<section id="services" class="py-24 px-8 md:px-24 text-black">
+    <div class="container mx-auto">
+        <h2 class="reveal-heading text-5xl font-bold varela-regular text-center mb-16">Co zde najdete?</h2>
+        
+        <div class="service-item flex flex-col md:flex-row items-center mb-16">
+            <div class="md:w-1/2 md:pr-16 mb-8 md:mb-0">
+                <h3 class="service-title text-3xl font-bold mb-4">Sauna s výhledem</h3>
+                <p class="service-description text-lg leading-relaxed">Relaxujte a nechte se prohřát v sauně s panoramatickým výhledem na okolní přírodu. Dokonalý zážitek pro vaše tělo i mysl.</p>
+            </div>
+            <div class="md:w-1/2 overflow-hidden">
+                <img src="sauna.jpg" alt="Sauna" class="smooth-image w-full h-auto object-cover">
+            </div>
+        </div>
+        
+        <div class="service-item flex flex-col md:flex-row items-center md:flex-row-reverse mb-16">
+            <div class="md:w-1/2 md:pl-16 mb-8 md:mb-0 text-right">
+                <h3 class="service-title text-3xl font-bold mb-4">Venkovní káď</h3>
+                <p class="service-description text-lg leading-relaxed">Po sauně se ochlaďte v dřevěné kádi plné čerstvé vody. Zažijte jedinečný pocit osvěžení pod širým nebem.</p>
+            </div>
+            <div class="md:w-1/2 overflow-hidden">
+                <img src="nadrz.jpg" alt="Kád s vodou" class="smooth-image w-full h-auto object-cover">
+            </div>
+        </div>
+        
+        <div class="service-item flex flex-col md:flex-row items-center mb-16">
+            <div class="md:w-1/2 md:pr-16 mb-8 md:mb-0">
+                <h3 class="service-title text-3xl font-bold mb-4">Láhev šampaňského</h3>
+                <p class="service-description text-lg leading-relaxed">Užijte si romantický večer u sklenky lahodného šampaňského, které pro vás připravíme. Ideální pro oslavu výjimečných okamžiků.</p>
+            </div>
+            <div class="md:w-1/2 overflow-hidden">
+                <img src="interier.jpg" alt="Šampaňské" class="smooth-image w-full h-auto object-cover">
+            </div>
+        </div>
+        
+        <div class="service-item flex flex-col md:flex-row items-center md:flex-row-reverse mb-16">
+            <div class="md:w-1/2 md:pl-16 mb-8 md:mb-0 text-right">
+                <h3 class="service-title text-3xl font-bold mb-4">Ranní jóga a meditace</h3>
+                <p class="service-description text-lg leading-relaxed">Začněte den s klidnou myslí. S instruktorem si zacvičte jógu a meditujte v našem inspirativním prostředí.</p>
+            </div>
+            <div class="md:w-1/2 overflow-hidden">
+                <img src="interier2.jpg" alt="Jóga a klid" class="smooth-image w-full h-auto object-cover">
+            </div>
+        </div>
+        
+        <div class="service-item flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 md:pr-16 mb-8 md:mb-0">
+                <h3 class="service-title text-3xl font-bold mb-4">Krmení lam</h3>
+                <p class="service-description text-lg leading-relaxed">Pro celou rodinu připravíme neobvyklý zážitek. Připojte se k nám a krmte naše přátelské lamy, které milují společnost.</p>
+            </div>
+            <div class="md:w-1/2 overflow-hidden">
+                <img src="zvirata.jpg" alt="Krmení lam" class="smooth-image w-full h-auto object-cover">
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section id="section4-quote2" class="py-32 px-8 md:px-24 bg-transparent text-center">
+    <blockquote class="reveal-heading text-4xl md:text-6xl text-black">"Klid uprostřed přírody."</blockquote>
+</section>
+
+<section id="section3" class="py-24 px-8 md:px-24 flex flex-col items-center space-y-12">
+    <div class="flex flex-col md:flex-row items-center justify-center space-y-12 md:space-y-0 md:space-x-8 w-full">
+        <div class="md:w-1/2 relative overflow-hidden">
+            <img src="interier.jpg" alt="Kuchyně" class="smooth-image w-full h-auto object-cover">
+        </div>
+        <div class="md:w-1/2 relative overflow-hidden">
+            <img src="interier2.jpg" alt="Jídelna" class="smooth-image w-full h-auto object-cover">
+        </div>
+    </div>
+
+    <!-- Button under images -->
+    <a href="#galerie" class="bg-black text-white py-4 px-10 text-lg font-bold shadow-lg hover:bg-gray-800 transition-colors duration-300">
+        Otevřít galerii
+    </a>
+</section>
+
+
+<!-- PRAKTICKÉ INFO SECTION -->
+<section id="info" class="py-20">
+  <div class="max-w-6xl mx-auto text-center mb-12">
+    <h2 class="reveal-heading text-4xl font-bold mb-4">Praktické informace</h2>
+    <p class="text-lg text-gray-600">Vše, co potřebujete vědět pro pohodlný pobyt</p>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 max-w-5xl mx-auto">
+    
+    <!-- Card -->
+<div class="info-card bg-white p-8 rounded-2xl shadow-md text-center transition-transform transform hover:scale-105 hover:shadow-xl">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 mx-auto mb-4 text-black">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+</svg>
+
+      <h3 class="text-xl font-semibold mb-2">Adults Only</h3>
+      <p class="text-gray-600">U nás si odpočinete v klidném prostředí určeném jen pro dospělé.</p>
+    </div>
+
+    <!-- Card -->
+<div class="info-card bg-white p-8 rounded-2xl shadow-md text-center transition-transform transform hover:scale-105 hover:shadow-xl">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" 
+       stroke-width="1.5" stroke="currentColor" 
+       class="w-12 h-12 mx-auto mb-4 text-black">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M8.288 15.038a5.25 5.25 0 0 1 7.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.565-5.565 14.587-5.565 20.152 0M12.53 18.22l-.53.53-.53-.53a.75.75 0 0 1 1.06 0Z" />
+  </svg>
+
+  <h3 class="text-xl font-semibold mb-2">Wi-Fi zdarma</h3>
+  <p class="text-gray-600">Rychlé a stabilní připojení dostupné v celém areálu.</p>
+</div>
+
+    <!-- Card -->
+<div class="info-card bg-white p-8 rounded-2xl shadow-md text-center transition-transform transform hover:scale-105 hover:shadow-xl">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 mx-auto mb-4 text-black">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M21 11.25v8.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 1 0 9.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1 1 14.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
+</svg>
+
+      <h3 class="text-xl font-semibold mb-2">Dárkový poukaz</h3>
+      <p class="text-gray-600">Možnost zakoupit jako dárek.</p>
+    </div>
+
+    <!-- Card -->
+<div class="info-card bg-white p-8 rounded-2xl shadow-md text-center transition-transform transform hover:scale-105 hover:shadow-xl">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 mx-auto mb-4 text-black">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />
+</svg>
+
+      <h3 class="text-xl font-semibold mb-2">Wellness</h3>
+      <p class="text-gray-600">Sauna a venkovní koupací sudy pro maximální relax.</p>
+    </div>
+
+    <!-- Card -->
+    <div class="info-card bg-white p-8 rounded-2xl shadow-md text-center transition-transform transform hover:scale-105 hover:shadow-xl">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 mx-auto mb-4 text-black">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+</svg>
+
+      <h3 class="text-xl font-semibold mb-2">Soukromí</h3>
+      <p class="text-gray-600">Každý apartmán je navržen pro maximální soukromí a klid.</p>
+    </div>
+
+        <!-- Card -->
+    <div class="info-card bg-white p-8 rounded-2xl shadow-md text-center transition-transform transform hover:scale-105 hover:shadow-xl">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 mx-auto mb-4 text-black">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
+</svg>
+
+      <h3 class="text-xl font-semibold mb-2">Bez starostí</h3>
+      <p class="text-gray-600">Veškeré vybavení máme, nemusíte nic řešit, jen si užívat.</p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- OUR STORY SECTION -->
+<section id="our-story" class="relative py-20 px-8">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+    
+    <!-- Obrázek -->
+    <div class="story-image">
+      <img src="majitele.jpg" alt="Náš příběh" class="shadow-lg w-full h-auto object-cover">
+    </div>
+
+    <!-- Textový blok -->
+    <div class="story-text bg-white p-10 shadow-lg">
+      <h2 class="reveal-heading text-4xl font-bold mb-6">Náš příběh</h2>
+      <p class="mb-4 text-lg leading-relaxed text-gray-700">
+        Naše cesta začala v roce 2020 s jednoduchým snem – vytvořit místo, kde se lidé mohou 
+        odpojit od ruchu města a znovu najít harmonii s přírodou.
+      </p>
+      <p class="text-lg leading-relaxed text-gray-700">
+        Každý detail, od architektury až po interiér, byl navržen s ohledem na pohodlí, estetiku 
+        a respekt k okolní krajině. To vše proto, aby byl váš pobyt nejen příjemný, ale i inspirující.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS SECTION -->
+<section id="reviews" class="relative py-20 overflow-hidden">
+  <div class="max-w-6xl mx-auto text-center mb-12">
+    <h2 class="reveal-heading text-4xl font-bold mb-6">Recenze</h2>
+    <p class="text-lg">Co říkají ti, kteří nás už navštívili?</p>
+  </div>
+
+  <!-- Carousel wrapper -->
+  <div class="relative overflow-hidden w-full">
+    <div id="reviews-track" class="flex space-x-8 w-max">
+      <!-- Review card -->
+      <div class="min-w-[300px] max-w-[300px] bg-white p-6 shadow-lg">
+        <p class="text-gray-700 mb-4">„Skvělý přístup a nádherný výsledek. Určitě se vrátím.“</p>
+        <span class="font-bold">— Jana K.</span>
+      </div>
+      <div class="min-w-[300px] max-w-[300px] bg-white p-6 shadow-lg">
+        <p class="text-gray-700 mb-4">„Perfektní služby a krásný prostor. Doporučuji všem.“</p>
+        <span class="font-bold">— Martin L.</span>
+      </div>
+      <div class="min-w-[300px] max-w-[300px] bg-white p-6 shadow-lg">
+        <p class="text-gray-700 mb-4">„Profesionální a přátelský tým, jsem nadšená.“</p>
+        <span class="font-bold">— Petra S.</span>
+      </div>
+      <div class="min-w-[300px] max-w-[300px] bg-white p-6 shadow-lg">
+        <p class="text-gray-700 mb-4">„Výsledek předčil očekávání, skvělá práce!“</p>
+        <span class="font-bold">— Tomáš R.</span>
+      </div>
+      <div class="min-w-[300px] max-w-[300px] bg-white p-6 shadow-lg">
+        <p class="text-gray-700 mb-4">„Jedinečný zážitek, moc děkuji.“</p>
+        <span class="font-bold">— Klára N.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="final-cta" class="py-24 px-8 md:px-24 flex flex-col items-center justify-center space-y-12">
+    <h2 class="blur-headline text-5xl md:text-7xl lg:text-8xl z-10 text-black text-center"> Rezervujte ještě dnes! </h2>
+    
+    <div class="flex flex-col md:flex-row justify-center items-center space-y-8 md:space-y-0 md:space-x-8 w-full max-w-4xl">
+        <div class="md:w-1/2 relative overflow-hidden">
+            <img src="/casita1.jpg" alt="Luxusní ložnice" class="smooth-image w-full h-auto object-cover">
+        </div>
+        <div class="md:w-1/2 relative overflow-hidden">
+            <img src="casita2.jpg" alt="Terasa" class="smooth-image w-full h-auto object-cover">
+        </div>
+    </div>
+</section>
+
+
+<section id="cta-section" class="cta-section relative h-[70vh] flex items-end justify-center py-16 px-8 overflow-hidden">
+    <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+    <div id="cta-box" class="relative z-10 bg-white p-8 md:p-12 max-w-lg w-full text-center shadow-lg flex flex-col items-center justify-center">
+        <img src="ikona.png" alt="Logo" class="h-24 mb-4">
+        <h3 class="text-3xl md:text-4xl mb-4 text-black">Vyberte si svůj termín</h3>
+        <p class="text-lg text-gray-700 mb-6">Objevte dokonalou harmonii luxusu a přírody. Vaše nezapomenutelné chvíle čekají.</p>
+        <a href="#" class="inline-block bg-black text-white py-3 px-8 text-lg font-bold hover:bg-gray-800 transition-colors duration-300">Zarezervovat</a>
+    </div>
+</section>
+
+<footer class="bg-black text-white py-16 px-8 md:px-24 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+    <div class="mb-8 md:mb-0">
+        <img src="colombia2-white.png" alt="Logo" class="h-20 mb-4 mx-auto md:mx-0">
+    </div>
+    <div class="flex space-x-8">
+        <a href="#" class="text-gray-300 hover:text-white transition-colors duration-200">Instagram</a>
+        <a href="#" class="text-gray-300 hover:text-white transition-colors duration-200">Facebook</a>
+        <a href="#" class="text-gray-300 hover:text-white transition-colors duration-200">Kontakt</a>
+    </div>
+</footer>
+
+<script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    /**
+     * FUNKCE PRO OPRAVU MEZER A PÍSMEN S DOTAŽNICÍ
+     * Rozdělí nadpis na slova a obalí je do div/span pro animaci.
+     */
+    function setupSplitText(selector) {
+        document.querySelectorAll(selector).forEach(headline => {
+            const text = headline.textContent.trim();
+            headline.innerHTML = '';
+            
+            const words = text.split(/\s+/); 
+
+            words.forEach((word, index) => {
+                const wordElement = document.createElement('span');
+                wordElement.textContent = word; 
+                wordElement.classList.add('word-span');
+                
+                const wordWrapper = document.createElement('div');
+                wordWrapper.classList.add('word-wrapper');
+                wordWrapper.appendChild(wordElement);
+                
+                headline.appendChild(wordWrapper);
+                
+                // === KLÍČOVÁ OPRAVA MEZER ===
+                if (index < words.length - 1) {
+                    const spaceElement = document.createElement('span');
+                    // Používáme &nbsp; jako obsah spanu, aby flexbox spolehlivě zobrazil mezeru
+                    spaceElement.innerHTML = '&nbsp;'; 
+                    headline.appendChild(spaceElement);
+                }
+            });
+            
+            // Nastavení počátečního stavu pro H1, aby se animovalo hned po načtení
+            if (headline.id === 'hero-title') {
+                 gsap.set(headline.querySelectorAll(".word-span"), { yPercent: 100, filter: "blur(12px)", opacity: 0 });
+            }
+        });
+    }
+
+    /**
+     * FUNKCE PRO APLIKACI BLUR-IN ANIMACE
+     */
+    function animateHeadlines() {
+        // Animace pro všechny nadpisy, které NEJSOU Hero (H1) - spouští se na scroll
+        gsap.from(".split-text-headline:not(#hero-title) .word-span", {
+            scrollTrigger: {
+                trigger: ".split-text-headline:not(#hero-title)",
+                start: "top 85%", 
+                toggleActions: "play none none reverse",
+            },
+            yPercent: 100,             
+            filter: "blur(12px)",      
+            opacity: 0,                
+            duration: 1.4,             
+            ease: "power3.out",        
+            stagger: 0.1              
+        });
+        
+        // Speciální animace pro H1 (Hero titulek) - spustí se po načtení stránky
+        gsap.to("#hero-title .word-span", {
+            yPercent: 0,             
+            filter: "blur(0px)",      
+            opacity: 1,                
+            duration: 1.4,             
+            ease: "power3.out",        
+            stagger: 0.1,
+            delay: 0.5 
+        });
+    }
+    
+    // === GLOBÁLNÍ ANIMACE OBRÁZKŮ (Smooth Fade/Slide Up) ===
+    function animateImages() {
+        // Nastavení výchozí opacity a pozice pro plynulý slide-up
+        gsap.set('.section-text, .smooth-image, .service-title, .service-description', { opacity: 0, y: 30 });
+
+        document.querySelectorAll('.smooth-image').forEach(image => {
+            gsap.to(image, {
+                scrollTrigger: {
+                    trigger: image.closest('.overflow-hidden') || image.parentElement, 
+                    start: "top 80%", 
+                    toggleActions: "play none none reverse"
+                },
+                y: 0, 
+                opacity: 1,
+                scale: 1, 
+                duration: 1.5,
+                ease: "power2.out"
+            });
+        });
+    }
+
+    // === ANIMACE TEXTŮ V SEKCI S TEXTEM (P, H3) ===
+    function animateTextBlocks() {
+        // Text pod H2 v Section 2
+        gsap.to(".section-text", {
+            scrollTrigger: { trigger: "#section2", start: "top 70%", toggleActions: "play none none reverse" },
+            y: 0, 
+            opacity: 1, 
+            duration: 1.2, 
+            delay: 0.4 
+        });
+
+        // Texty ve SLUŽBÁCH
+        document.querySelectorAll('.service-item').forEach(item => {
+            const tl = gsap.timeline({
+                scrollTrigger: { 
+                    trigger: item, 
+                    start: "top 80%", 
+                    toggleActions: "play none none reverse" 
+                }
+            });
+            
+            // Animace nadpisu služby
+            tl.to(item.querySelector('.service-title'), { y: 0, opacity: 1, duration: 1.0, ease: "power2.out" });
+            // Animace popisu služby
+            tl.to(item.querySelector('.service-description'), { y: 0, opacity: 1, duration: 1.0, ease: "power2.out" }, "-=0.8");
+        });
+    }
+
+    // === Zbytek animací (Hero CTA, CTA Box, Collage) ===
+    gsap.from(".hero-subtitle", { 
+        y: 50, 
+        opacity: 0, 
+        duration: 1.5, 
+        delay: 0.3, 
+        ease: "power3.out" 
+    });
+    gsap.from(".hero-cta", { 
+        x: 50, 
+        opacity: 0, 
+        duration: 1.5, 
+        delay: 0.8, 
+        ease: "power3.out" 
+    });
+    gsap.to("#cta-box", { 
+        y: 0, 
+        opacity: 1, 
+        duration: 1.5, 
+        ease: "power3.out", 
+        scrollTrigger: { 
+            trigger: "#cta-section", 
+            start: "top 75%", 
+            toggleActions: "play none none reverse", 
+        } 
+    });
+    gsap.from(".collage-text-block", {
+        scrollTrigger: {
+            trigger: ".collage-text-block",
+            start: "top 75%", 
+            toggleActions: "play none none reverse",
+        },
+        opacity: 0, 
+        scale: 0.9, 
+        duration: 1.5, 
+        ease: "power3.out"
+    });
+
+
+    // === MENU TOGGLE A LOGIKA ZAVÍRÁNÍ PŘI SCROLLU ===
+    const menuToggle = document.getElementById('menu-toggle');
+    const sideMenu = document.getElementById('side-menu');
+    const menuItems = document.querySelectorAll('.menu-item');
+    const hamburgerLines = document.querySelectorAll('#menu-toggle .hamburger span'); 
+    let isMenuOpen = false;
+    
+    gsap.set(sideMenu, { xPercent: 100 });
+    gsap.set(menuItems, { opacity: 0, y: 20 });
+    gsap.set(hamburgerLines, { backgroundColor: 'white' }); 
+
+    function closeMenu() {
+        if (isMenuOpen) {
+            gsap.to(menuItems, { opacity: 0, y: 20, duration: 0.3, stagger: 0.05 });
+            gsap.to(sideMenu, { xPercent: 100, duration: 0.6, delay: 0.2, ease: "power3.inOut" });
+
+            gsap.to(hamburgerLines[0], { rotate: 0, y: 0, duration: 0.3, backgroundColor: 'white' });
+            gsap.to(hamburgerLines[1], { opacity: 1, duration: 0.3 });
+            gsap.to(hamburgerLines[2], { rotate: 0, y: 0, duration: 0.3, backgroundColor: 'white' });
+            
+            isMenuOpen = false;
+        }
+    }
+
+    // SCROLLTRIGGER PRO AUTOMATICKÉ ZAVŘENÍ MENU
+    ScrollTrigger.create({
+        start: "top top", 
+        onUpdate: (self) => {
+            // Zavře menu, pokud je otevřené A uživatel scrolluje (self.direction !== 0)
+            if (self.direction !== 0 && isMenuOpen) {
+                closeMenu();
+            }
+        }
+    });
+
+    menuToggle.addEventListener('click', () => {
+        if (isMenuOpen) {
+            closeMenu();
+        } else {
+            // Logika OTEVÍRÁNÍ
+            isMenuOpen = true;
+            gsap.to(sideMenu, { xPercent: 0, duration: 0.6, ease: "power3.inOut" });
+            gsap.to(menuItems, { opacity: 1, y: 0, duration: 0.4, stagger: 0.1, delay: 0.3, ease: "power2.out" });
+            gsap.to(hamburgerLines[0], { rotate: 45, y: 8, duration: 0.3, backgroundColor: 'black' });
+            gsap.to(hamburgerLines[1], { opacity: 0, duration: 0.3 });
+            gsap.to(hamburgerLines[2], { rotate: -45, y: -8, duration: 0.3, backgroundColor: 'black' });
+        }
+    });
+
+    // === SPUŠTĚNÍ VŠECH FUNKCÍ ===
+    setupSplitText('.split-text-headline'); // Nejdříve rozdělíme text
+    animateHeadlines();                      // Poté animujeme nadpisy
+    animateImages();
+    animateTextBlocks();
+
+        // Všechny nadpisy se třídou reveal-heading
+    gsap.utils.toArray(".reveal-heading").forEach((heading) => {
+      gsap.from(heading, {
+        y: 80,
+        opacity: 0,
+        duration: 1.2,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: heading,
+          start: "top 85%", // spustí, když je 85 % viewportu
+        }
+      });
+    });
+
+    gsap.registerPlugin(ScrollTrigger);
+
+// Cílíme na nadpis, který chceme animovat
+const headline = document.querySelector(".blur-headline");
+
+// --- Skript pro automatické rozdělení na slova ---
+// Získáme text a rozdělíme ho na pole slov
+const words = headline.textContent.split(" ");
+// Vyprázdníme původní obsah nadpisu
+headline.textContent = "";
+
+// Pro každé slovo vytvoříme potřebnou strukturu <div><span>...</span></div>
+words.forEach((word, index) => {
+    const wordWrapper = document.createElement("div");
+    wordWrapper.classList.add("word-wrapper");
+
+    const wordSpan = document.createElement("span");
+    wordSpan.classList.add("word-span");
+    wordSpan.textContent = word;
+
+    wordWrapper.appendChild(wordSpan);
+    headline.appendChild(wordWrapper);
+
+    // Přidáme mezeru za každým slovem, kromě posledního
+    if (index < words.length - 1) {
+        headline.appendChild(document.createTextNode(" "));
+    }
+});
+// --- Konec skriptu pro rozdělení ---
+
+
+// ✨ --- Samotná GSAP animace --- ✨
+gsap.from(".word-span", {
+    scrollTrigger: {
+        trigger: ".blur-headline",
+        start: "top 80%", // Kdy se animace spustí
+        toggleActions: "play none none reverse",
+    },
+    yPercent: 90,             // 1. POHYB: Začíná 100% své výšky pod svou pozicí (schovaný v masce)
+    filter: "blur(12px)",      // 2. ROZMAZÁNÍ: Začíná s rozmazáním 12px
+    opacity: 0,                // 3. PRŮHLEDNOST: Začíná plně průhledný
+    duration: 1.4,             // Délka animace
+    ease: "power3.out",        // Typ "uvolnění" animace
+    stagger: 0.2             // Zpoždění 0.1s mezi animací jednotlivých slov
+});
+
+  // CTA box
+    gsap.from("#cta-box", {
+      y: 120,
+      opacity: 0,
+      duration: 1.5,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: "#cta-section",
+        start: "top 70%", // začne trochu dřív
+      }
+    });
+
+      // Animace pro obrázek
+  gsap.from(".story-image", {
+    x: -120,
+    opacity: 0,
+    duration: 1.5,
+    ease: "power3.out",
+    scrollTrigger: {
+      trigger: ".story-image",
+      start: "top 80%"
+    }
+  });
+
+  // Fade-in headings
+  gsap.from("#reviews h2, #reviews p", {
+    opacity: 0,
+    y: 30,
+    duration: 1,
+    stagger: 0.2,
+    scrollTrigger: {
+      trigger: "#reviews",
+      start: "top 80%"
+    }
+  });
+
+  // Infinite horizontal loop for reviews
+  const track = document.querySelector("#reviews-track");
+  const cards = gsap.utils.toArray("#reviews-track > div");
+
+  // Clone cards to make loop seamless
+  cards.forEach(card => {
+    let clone = card.cloneNode(true);
+    track.appendChild(clone);
+  });
+
+  let totalWidth = track.scrollWidth / 2; // half because we duplicated
+  gsap.to(track, {
+    x: -totalWidth,
+    duration: 60, // slow loop
+    ease: "linear",
+    repeat: -1
+  });
+
+  // Info items reveal
+gsap.from(".info-item", {
+  scrollTrigger: {
+    trigger: "#info",
+    start: "top 80%",
+  },
+  y: 50,
+  opacity: 0,
+  duration: 0.8,
+  stagger: 0.2,
+  ease: "power2.out"
+});
+</script>
+</body>
+</html>

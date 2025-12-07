@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxusní Ubytování - Finální Verze</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        /* Základní styly pro font a pozadí */
+        @import url('https://fonts.googleapis.com/css2?family=Varela&display=swap');
+        
+        /* Barvy pro text a pozadí s texturou */
+        :root {
+            --color-primary: #000000;
+            --color-secondary: #f8f8f8;
+            --color-text: #4a5568;
+            --color-highlight: #757575;
+        }
+
+        body {
+            background-color: var(--color-secondary);
+            background-image: url('texture1.png');
+            background-repeat: repeat;
+            background-size: 400px;
+            background-attachment: fixed;
+            font-family: "Varela", sans-serif;
+            color: var(--color-primary);
+        }
+
+        /* Hero sekce a CTA */
+        .hero-section {
+            background-image: url('casitanight.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .cta-section {
+            background-image: url('https://picsum.photos/1920/1080?random=6');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Styly pro "Nutrad" sekci - zachování mřížky */
+        .collage-section {
+            width: 100%;
+            padding: 6rem 2rem;
+        }
+
+        .collage-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, auto);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .collage-text-block {
+            grid-column: 2 / 4;
+            grid-row: 2 / 4;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 10;
+            background-color: rgba(255, 255, 255, 0.9); /* Mírné bílé pozadí pro lepší čitelnost */
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .collage-text-block h2 {
+            font-size: 2.25rem;
+            margin-bottom: 1rem;
+            color: var(--color-primary);
+        }
+
+        .collage-text-block p {
+            font-size: 1.125rem;
+            line-height: 1.6;
+            max-width: 450px;
+            color: var(--color-text);
+        }
+
+        .collage-image-item {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+        }
+
+        .collage-image-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Konkrétní umístění jednotlivých obrázků v mřížce */
+        .collage-img-1 { grid-column: 1 / 3; grid-row: 1 / 3; }
+        .collage-img-2 { grid-column: 3 / 5; grid-row: 1 / 2; }
+        .collage-img-3 { grid-column: 4 / 5; grid-row: 2 / 4; }
+        .collage-img-4 { grid-column: 1 / 2; grid-row: 3 / 5; }
+        .collage-img-5 { grid-column: 2 / 4; grid-row: 4 / 5; }
+        .collage-text-block { grid-column: 2 / 4; grid-row: 2 / 4; }
+
+        /* Styly pro animaci nadpisů s blur-in efektem */
+        .split-text-headline {
+            /* Důležité pro to, aby se span obaly správně zarovnaly jako slova */
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            line-height: 1.1; /* Jemné snížení mezery mezi řádky pro nadpisy */
+        }
+        .word-wrapper {
+            /* Wrapper vytváří masku pro slide-up efekt */
+            display: inline-block;
+            overflow: hidden;
+            line-height: 1.1;
+        }
+        .word-span {
+            /* Element, který se bude animovat (slide a blur) */
+            display: inline-block;
+        }
+
+        /* Media query pro responzivitu koláže */
+        @media (max-width: 768px) {
+            .collage-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: auto;
+                gap: 1rem;
+            }
+            .collage-img-1 { grid-column: 1 / 3; grid-row: 1 / 2; }
+            .collage-text-block { grid-column: 1 / 3; grid-row: 2 / 3; }
+            .collage-img-2 { grid-column: 1 / 2; grid-row: 3 / 4; }
+            .collage-img-3 { grid-column: 2 / 3; grid-row: 3 / 4; }
+            .collage-img-4 { grid-column: 1 / 2; grid-row: 4 / 5; }
+            .collage-img-5 { grid-column: 2 / 3; grid-row: 4 / 5; }
+        }
+    </style>
+</head>
+<body>
+
+<header id="main-header" class="absolute top-0 left-0 w-full z-50 p-6 flex justify-between items-center transition-colors duration-500">
+    <img src="testlogo1.png" alt="Logo" class="logo h-30">
+    <button id="menu-toggle" class="z-50 w-12 h-12 flex justify-center items-center">
+        <div class="hamburger w-8 h-8 relative cursor-pointer">
+            <span class="block absolute w-full h-1 bg-white top-0 transition-all duration-300"></span>
+            <span class="block absolute w-full h-1 bg-white top-1/2 -translate-y-1/2 transition-all duration-300"></span>
+            <span class="block absolute w-full h-1 bg-white bottom-0 transition-all duration-300"></span>
+        </div>
+    </button>
+</header>
+
+<div id="side-menu" class="fixed right-0 top-0 h-full w-full md:w-[30%] bg-white z-40 flex flex-col justify-between shadow-lg p-8" style="transform: translateX(100%);">
+    <nav class="w-full mt-24">
+        <ul class="text-center">
+            <li><a href="#" class="menu-item text-black text-4xl md:text-5xl mb-8 block opacity-0 translate-y-5">O nás</a></li>
+            <li><a href="#" class="menu-item text-black text-4xl md:text-5xl mb-8 block opacity-0 translate-y-5">Galerie</a></li>
+            <li><a href="#" class="menu-item text-black text-4xl md:text-5xl mb-8 block opacity-0 translate-y-5">Služby</a></li>
+            <li><a href="#" class="menu-item text-black text-4xl md:text-5xl mb-8 block opacity-0 translate-y-5">Kontakt</a></li>
+        </ul>
+    </nav>
+    <div class="mt-12 text-center pb-8">
+        <a href="#cta-section" class="inline-block bg-black text-white py-3 px-8 text-lg font-bold hover:bg-gray-800 transition-colors duration-300">
+            Zarezervovat termín
+        </a>
+    </div>
+</div>
+
+<section id="hero" class="hero-section relative h-screen flex flex-col justify-center items-center text-center text-white">
+    <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+    <h1 class="hero-title text-5xl md:text-7xl lg:text-8xl z-10 text-white">Jedinečný zážitek</h1>
+    <p class="hero-subtitle text-lg md:text-xl lg:text-2xl mt-4 z-10 text-white">Odpočiňte si v srdci přírody</p>
+    <a href="#cta-section" class="hero-cta absolute bottom-8 right-8 z-10 inline-block bg-white text-black py-3 px-8 text-lg font-bold hover:bg-gray-800 hover:text-white transition-colors duration-300">Zarezervovat termín</a>
+</section>
+
+<section id="section2" class="py-24 px-8 md:px-24 flex flex-col md:flex-row items-center justify-between space-y-12 md:space-y-0 md:space-x-16">
+    <div class="md:w-1/2 text-black">
+        <h2 class="split-text-headline text-4xl mb-6">Klid, inspirace, luxus.</h2>
+        <p class="section-text text-lg leading-relaxed opacity-0 translate-y-8">Vila s dechberoucím výhledem, kde se každý detail snoubí s přírodou. Přijďte si vychutnat dokonalý klid a nechte se unést atmosférou, která vás nabije energií.</p>
+    </div>
+    <div class="md:w-1/2 relative overflow-hidden">
+        <img src="stromy.jpg" alt="Elegantní interiér" class="smooth-image w-full h-auto object-cover opacity-0 translate-y-8">
+    </div>
+</section>
+
+---
+
+<section id="section4-quote1" class="py-32 px-8 md:px-24 bg-transparent text-center">
+    <blockquote class="split-text-headline text-4xl md:text-6xl varela-regular text-black">"Kouzelné místo na odpočinek jen pro Vás"</blockquote>
+</section>
+
+---
+
+<section id="section3" class="py-24 px-8 md:px-24 flex flex-col md:flex-row items-center justify-center space-y-12 md:space-y-0 md:space-x-8">
+    <div class="md:w-1/2 relative overflow-hidden">
+        <img src="interier.jpg" alt="Kuchyně" class="smooth-image w-full h-auto object-cover opacity-0 translate-y-8">
+    </div>
+    <div class="md:w-1/2 relative overflow-hidden">
+        <img src="interier2.jpg" alt="Jídelna" class="smooth-image w-full h-auto object-cover opacity-0 translate-y-8">
+    </div>
+</section>
+
+---
+
+<section id="collage-section" class="collage-section">
+    <div class="collage-grid">
+        <div class="collage-text-block">
+            <h2 class="split-text-headline text-2xl md:text-3xl">Harmonie designu a přírody</h2>
+            <p>V roce 2025 jsme otevřeli dveře do světa, kde se moderní architektura snoubí s nedotčenou krajinou. Objevte prostor navržený pro dokonalý odpočinek a inspiraci.</p>
+        </div>
+        
+        <div class="collage-image-item collage-img-1 overflow-hidden">
+            <img src="https://picsum.photos/400/600?random=21" alt="Detail architektury" class="smooth-image opacity-0 translate-y-8">
+        </div>
+        <div class="collage-image-item collage-img-2 overflow-hidden">
+            <img src="https://picsum.photos/400/300?random=22" alt="Dřevěné trámy" class="smooth-image opacity-0 translate-y-8">
+        </div>
+        <div class="collage-image-item collage-img-3 overflow-hidden">
+            <img src="https://picsum.photos/600/300?random=23" alt="Interiér dílny" class="smooth-image opacity-0 translate-y-8">
+        </div>
+        <div class="collage-image-item collage-img-4 overflow-hidden">
+            <img src="https://picsum.photos/600/400?random=24" alt="Mramorová deska" class="smooth-image opacity-0 translate-y-8">
+        </div>
+        <div class="collage-image-item collage-img-5 overflow-hidden">
+            <img src="https://picsum.photos/300/300?random=25" alt="Skleněné tabule" class="smooth-image opacity-0 translate-y-8">
+        </div>
+    </div>
+</section>
+
+---
+
+<section id="services" class="py-24 px-8 md:px-24 text-black">
+    <div class="container mx-auto">
+        <h2 class="split-text-headline text-5xl font-bold varela-regular text-center mb-16">NAŠE SLUŽBY</h2>
+        
+        <div class="service-item flex flex-col md:flex-row items-center mb-16">
+            <div class="md:w-1/2 md:pr-16 mb-8 md:mb-0">
+                <h3 class="service-title text-3xl font-bold mb-4 opacity-0 translate-y-8">Sauna s výhledem</h3>
+                <p class="service-description text-lg leading-relaxed opacity-0 translate-y-8">Relaxujte a nechte se prohřát v sauně s panoramatickým výhledem na okolní přírodu. Dokonalý zážitek pro vaše tělo i mysl.</p>
+            </div>
+            <div class="md:w-1/2 overflow-hidden">
+                <img src="sauna.jpg" alt="Sauna" class="smooth-image w-full h-auto object-cover opacity-0 translate-y-8">
+            </div>
+        </div>
+        
+        <div class="service-item flex flex-col md:flex-row items-center md:flex-row-reverse mb-16">
+            <div class="md:w-1/2 md:pl-16 mb-8 md:mb-0 text-right">
+                <h3 class="service-title text-3xl font-bold mb-4 opacity-0 translate-y-8">Venkovní káď</h3>
+                <p class="service-description text-lg leading-relaxed opacity-0 translate-y-8">Po sauně se ochlaďte v dřevěné kádi plné čerstvé vody. Zažijte jedinečný pocit osvěžení pod širým nebem.</p>
+            </div>
+            <div class="md:w-1/2 overflow-hidden">
+                <img src="nadrz.jpg" alt="Kád s vodou" class="smooth-image w-full h-auto object-cover opacity-0 translate-y-8">
+            </div>
+        </div>
+        
+        <div class="service-item flex flex-col md:flex-row items-center mb-16">
+            <div class="md:w-1/2 md:pr-16 mb-8 md:mb-0">
+                <h3 class="service-title text-3xl font-bold mb-4 opacity-0 translate-y-8">Láhev šampaňského</h3>
+                <p class="service-description text-lg leading-relaxed opacity-0 translate-y-8">Užijte si romantický večer u sklenky lahodného šampaňského, které pro vás připravíme. Ideální pro oslavu výjimečných okamžiků.</p>
+            </div>
+            <div class="md:w-1/2 overflow-hidden">
+                <img src="interier.jpg" alt="Šampaňské" class="smooth-image w-full h-auto object-cover opacity-0 translate-y-8">
+            </div>
+        </div>
+        
+        <div class="service-item flex flex-col md:flex-row items-center md:flex-row-reverse mb-16">
+            <div class="md:w-1/2 md:pl-16 mb-8 md:mb-0 text-right">
+                <h3 class="service-title text-3xl font-bold mb-4 opacity-0 translate-y-8">Ranní jóga a meditace</h3>
+                <p class="service-description text-lg leading-relaxed opacity-0 translate-y-8">Začněte den s klidnou myslí. S instruktorem si zacvičte jógu a meditujte v našem inspirativním prostředí.</p>
+            </div>
+            <div class="md:w-1/2 overflow-hidden">
+                <img src="interier2.jpg" alt="Jóga a klid" class="smooth-image w-full h-auto object-cover opacity-0 translate-y-8">
+            </div>
+        </div>
+        
+        <div class="service-item flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 md:pr-16 mb-8 md:mb-0">
+                <h3 class="service-title text-3xl font-bold mb-4 opacity-0 translate-y-8">Krmení lam</h3>
+                <p class="service-description text-lg leading-relaxed opacity-0 translate-y-8">Pro celou rodinu připravíme neobvyklý zážitek. Připojte se k nám a krmte naše přátelské lamy, které milují společnost.</p>
+            </div>
+            <div class="md:w-1/2 overflow-hidden">
+                <img src="zvirata.jpg" alt="Krmení lam" class="smooth-image w-full h-auto object-cover opacity-0 translate-y-8">
+            </div>
+        </div>
+
+    </div>
+</section>
+
+---
+
+<section id="section4-quote2" class="py-32 px-8 md:px-24 bg-transparent text-center">
+    <blockquote class="split-text-headline text-4xl md:text-6xl text-black">"Dopřejte si odpočinek, jaký si zasloužíte."</blockquote>
+</section>
+
+---
+
+<section id="final-cta" class="py-24 px-8 md:px-24 flex flex-col items-center justify-center space-y-12">
+    <h2 class="split-text-headline text-5xl md:text-7xl lg:text-8xl z-10 text-black text-center"> Rezervujte ještě dnes! </h2>
+    
+    <div class="flex flex-col md:flex-row justify-center items-center space-y-8 md:space-y-0 md:space-x-8 w-full max-w-4xl">
+        <div class="md:w-1/2 relative overflow-hidden">
+            <img src="/casita1.jpg" alt="Luxusní ložnice" class="smooth-image w-full h-auto object-cover opacity-0 translate-y-8">
+        </div>
+        <div class="md:w-1/2 relative overflow-hidden">
+            <img src="casita2.jpg" alt="Terasa" class="smooth-image w-full h-auto object-cover opacity-0 translate-y-8">
+        </div>
+    </div>
+</section>
+
+---
+
+<section id="cta-section" class="cta-section relative h-[70vh] flex items-end justify-center py-16 px-8 overflow-hidden">
+    <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+    <div id="cta-box" class="relative z-10 bg-white p-8 md:p-12 max-w-lg w-full text-center shadow-lg flex flex-col items-center justify-center opacity-0 translate-y-12">
+        <img src="casita_logo_black.png" alt="Logo" class="h-16 mb-4">
+        <h3 class="text-3xl md:text-4xl mb-4 text-black">Rezervujte si svůj pobyt</h3>
+        <p class="text-lg text-gray-700 mb-6">Objevte dokonalou harmonii luxusu a přírody. Vaše nezapomenutelné chvíle čekají.</p>
+        <a href="#" class="inline-block bg-black text-white py-3 px-8 text-lg font-bold hover:bg-gray-800 transition-colors duration-300">Zjistit více</a>
+    </div>
+</section>
+
+---
+
+<footer class="bg-black text-white py-16 px-8 md:px-24 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+    <div class="mb-8 md:mb-0">
+        <img src="logo4.png" alt="Logo" class="h-16 mb-4 mx-auto md:mx-0">
+        <p class="text-gray-400">Luxusní útočiště pro vaši duši.</p>
+    </div>
+    <div class="flex space-x-8">
+        <a href="#" class="text-gray-300 hover:text-white transition-colors duration-200">Instagram</a>
+        <a href="#" class="text-gray-300 hover:text-white transition-colors duration-200">Facebook</a>
+        <a href="#" class="text-gray-300 hover:text-white transition-colors duration-200">Kontakt</a>
+    </div>
+</footer>
+
+<script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    /**
+     * Funkce pro rozdělení nadpisu na slova a obalení do span pro animaci.
+     * @param {string} selector - CSS selektor pro cílové nadpisy.
+     */
+    function setupSplitText(selector) {
+        document.querySelectorAll(selector).forEach(headline => {
+            const text = headline.textContent;
+            headline.innerHTML = '';
+            
+            // Rozdělení na slova a obalení do <div><span class="word-span">slovo</span></div>
+            text.split(' ').forEach((word, index) => {
+                // Přidá pevnou mezeru pro správné zalomení řádků
+                const wordElement = document.createElement('span');
+                wordElement.innerHTML = word === ' ' ? '&nbsp;' : word;
+                wordElement.classList.add('word-span');
+                
+                const wordWrapper = document.createElement('div');
+                wordWrapper.classList.add('word-wrapper');
+                wordWrapper.appendChild(wordElement);
+                
+                headline.appendChild(wordWrapper);
+                
+                // Přidá skutečnou mezeru po wrapperu, kromě posledního slova
+                if (index < text.split(' ').length - 1) {
+                    headline.appendChild(document.createTextNode(' '));
+                }
+            });
+        });
+    }
+
+    // Aplikuje rozdělení textu na všechny hlavní nadpisy a citace
+    setupSplitText('.split-text-headline');
+
+    // === GLOBÁLNÍ ANIMACE NADPISŮ (Blur-in) ===
+    function animateHeadlines() {
+        document.querySelectorAll('.split-text-headline').forEach(headline => {
+            // Cílíme na vnitřní span, který se animuje
+            gsap.from(headline.querySelectorAll(".word-span"), {
+                scrollTrigger: {
+                    trigger: headline,
+                    start: "top 85%", 
+                    toggleActions: "play none none reverse"
+                },
+                yPercent: 100, // Slide-up efekt (díky word-wrapper masce)
+                filter: "blur(8px)", // Blur-in efekt
+                opacity: 0,
+                duration: 1.2,
+                ease: "power3.out",
+                stagger: 0.05 // Pomalé postupné zobrazení
+            });
+        });
+    }
+
+    // === GLOBÁLNÍ ANIMACE OBRÁZKŮ (Smooth Fade/Slide Up) ===
+    function animateImages() {
+        document.querySelectorAll('.smooth-image').forEach(image => {
+            gsap.to(image, {
+                scrollTrigger: {
+                    trigger: image.closest('.overflow-hidden') || image.parentElement, // Triggerem je kontejner, aby se animace spustila ve správný čas
+                    start: "top 80%", 
+                    toggleActions: "play none none reverse"
+                },
+                y: 0, // Posun dolů zpět na 0
+                opacity: 1,
+                scale: 1, // Zpět na původní velikost (pokud by se přidalo mírné zmenšení na start)
+                duration: 1.5,
+                ease: "power2.out"
+            });
+        });
+    }
+
+    // === ANIMACE TEXTŮ V SEKCI S TEXTEM (P, H3) ===
+    function animateTextBlocks() {
+        // Text pod H2 v Section 2
+        gsap.to(".section-text", {
+            scrollTrigger: { trigger: "#section2", start: "top 70%", toggleActions: "play none none reverse" },
+            y: 0, 
+            opacity: 1, 
+            duration: 1.2, 
+            delay: 0.4 
+        });
+
+        // Texty ve SLUŽBÁCH
+        document.querySelectorAll('.service-item').forEach(item => {
+            const tl = gsap.timeline({
+                scrollTrigger: { 
+                    trigger: item, 
+                    start: "top 80%", 
+                    toggleActions: "play none none reverse" 
+                }
+            });
+            
+            // Animace nadpisu služby
+            tl.to(item.querySelector('.service-title'), { y: 0, opacity: 1, duration: 1.0, ease: "power2.out" });
+            // Animace popisu služby
+            tl.to(item.querySelector('.service-description'), { y: 0, opacity: 1, duration: 1.0, ease: "power2.out" }, "-=0.8");
+            // Animace obrázku (bude spuštěna v rámci globální animateImages, ale zde je zajištěno, že se animuje text)
+        });
+    }
+    
+    // === HERO animace ===
+    gsap.from(".hero-title, .hero-subtitle", { 
+        y: 50, 
+        opacity: 0, 
+        duration: 1.5, 
+        stagger: 0.3, 
+        ease: "power3.out" 
+    });
+    gsap.from(".hero-cta", { 
+        x: 50, 
+        opacity: 0, 
+        duration: 1.5, 
+        delay: 0.5, 
+        ease: "power3.out" 
+    });
+
+
+    // === CTA BOX animace ===
+    gsap.to("#cta-box", { 
+        y: 0, 
+        opacity: 1, 
+        duration: 1.5, 
+        ease: "power3.out", 
+        scrollTrigger: { 
+            trigger: "#cta-section", 
+            start: "top 75%", 
+            toggleActions: "play none none reverse", 
+        } 
+    });
+
+    // === ANIMACE COLLAGE TEXTU ===
+    gsap.from(".collage-text-block", {
+        scrollTrigger: {
+            trigger: ".collage-text-block",
+            start: "top 75%", 
+            toggleActions: "play none none reverse",
+        },
+        opacity: 0, 
+        scale: 0.9, 
+        duration: 1.5, 
+        ease: "power3.out"
+    });
+
+
+    // === MENU TOGGLE ===
+    const menuToggle = document.getElementById('menu-toggle');
+    const sideMenu = document.getElementById('side-menu');
+    const menuItems = document.querySelectorAll('.menu-item');
+    const hamburgerSpans = document.querySelectorAll('#menu-toggle .hamburger span');
+    let isMenuOpen = false;
+
+    // POZNÁMKA: Původní GSAP.set pro #side-menu byl odstraněn, protože inline style v HTML zajišťuje počáteční skrytí.
+
+    menuToggle.addEventListener('click', () => {
+        isMenuOpen = !isMenuOpen;
+        if (isMenuOpen) {
+            // Otevření menu
+            gsap.to(sideMenu, { xPercent: 0, duration: 0.6, ease: "power3.inOut" });
+            gsap.to(menuItems, { opacity: 1, y: 0, duration: 0.4, stagger: 0.1, delay: 0.3, ease: "power2.out" });
+
+            // Animace na černý křížek
+            gsap.to(hamburgerSpans[0], { rotate: 45, y: 8, duration: 0.3, backgroundColor: 'black' });
+            gsap.to(hamburgerSpans[1], { opacity: 0, duration: 0.3 });
+            gsap.to(hamburgerSpans[2], { rotate: -45, y: -8, duration: 0.3, backgroundColor: 'black' });
+            
+            // Změna barvy menu ikony na černou
+            gsap.to("#menu-toggle .hamburger span", { backgroundColor: "black" });
+
+        } else {
+            // Zavření menu
+            gsap.to(menuItems, { opacity: 0, y: 20, duration: 0.3, stagger: 0.05 });
+            gsap.to(sideMenu, { xPercent: 100, duration: 0.6, delay: 0.2, ease: "power3.inOut" });
+
+            // Animace zpět na bílý hamburger
+            gsap.to(hamburgerSpans[0], { rotate: 0, y: 0, duration: 0.3, backgroundColor: 'white' });
+            gsap.to(hamburgerSpans[1], { opacity: 1, duration: 0.3 });
+            gsap.to(hamburgerSpans[2], { rotate: 0, y: 0, duration: 0.3, backgroundColor: 'white' });
+            
+            // Změna barvy menu ikony na bílou (pro header přes hero sekci)
+            gsap.to("#menu-toggle .hamburger span", { backgroundColor: "white" });
+        }
+    });
+
+    // Spustit všechny animační funkce
+    animateHeadlines();
+    animateImages();
+    animateTextBlocks();
+</script>
+</body>
+</html>

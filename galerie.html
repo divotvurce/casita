@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tipy na výlet - Okolí</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Varela&display=swap');
+        :root {
+            --color-primary: #000000;
+            --color-secondary: #f8f8f8;
+        }
+        body {
+            background-color: var(--color-secondary);
+            background-image: url('texture3.png');
+            background-repeat: repeat;
+            background-size: 400px;
+            background-attachment: fixed;
+            font-family: "Varela", sans-serif;
+            color: var(--color-primary);
+        }
+        .tip-section {
+            padding: 6rem 2rem;
+        }
+        .tip-block {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 6rem;
+        }
+        .tip-block:nth-child(even) .tip-image {
+            order: 2;
+        }
+        .tip-block:nth-child(even) .tip-text {
+            order: 1;
+            text-align: right;
+        }
+        .tip-image {
+            flex: 1 1 50%;
+            padding: 1rem;
+            overflow: hidden;
+            border-radius: 1rem;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+        .tip-image img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .tip-image:hover img {
+            transform: scale(1.05);
+        }
+        .tip-text {
+            flex: 1 1 50%;
+            padding: 1rem 2rem;
+        }
+        .tip-text h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .tip-text p {
+            font-size: 1.125rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        .tip-text a {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            background-color: #000;
+            color: #fff;
+            border-radius: 0.75rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .tip-text a:hover {
+            background-color: #333;
+        }
+        @media (max-width: 768px) {
+            .tip-block {
+                flex-direction: column;
+                text-align: center !important;
+            }
+            .tip-text {
+                padding: 1rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header id="main-header" class="absolute top-0 left-0 w-full z-50 p-6 flex justify-between items-center transition-colors duration-500 bg-black">
+    <img src="colombia1-white.png" alt="Logo" class="logo h-8">
+    <button id="menu-toggle" class="z-[60] w-12 h-12 flex justify-center items-center">
+        <div class="hamburger w-8 h-8 relative cursor-pointer">
+            <span class="block absolute w-full h-1 bg-white top-0 transition-all duration-300"></span>
+            <span class="block absolute w-full h-1 bg-white top-1/2 -translate-y-1/2 transition-all duration-300"></span>
+            <span class="block absolute w-full h-1 bg-white bottom-0 transition-all duration-300"></span>
+        </div>
+    </button>
+</header>
+
+<div id="side-menu" class="fixed right-0 top-0 h-full w-full md:w-[30%] bg-white z-40 flex flex-col justify-between shadow-lg p-8">
+    <nav class="w-full mt-24">
+        <ul class="text-center">
+            <li><a href="#" class="menu-item text-black text-4xl md:text-5xl mb-8 block">O nás</a></li>
+            <li><a href="#" class="menu-item text-black text-4xl md:text-5xl mb-8 block">Galerie</a></li>
+            <li><a href="#" class="menu-item text-black text-4xl md:text-5xl mb-8 block">Služby</a></li>
+            <li><a href="#" class="menu-item text-black text-4xl md:text-5xl mb-8 block">Kontakt</a></li>
+        </ul>
+    </nav>
+    <div class="mt-12 text-center pb-8">
+        <a href="#cta-section" class="inline-block bg-black text-white py-3 px-8 text-lg font-bold hover:bg-gray-800 transition-colors duration-300">
+            Zarezervovat termín
+        </a>
+        <img src="colombia1-black.png" alt="Logo" class="logo h-5 mt-4 mx-auto">
+    </div>
+</div>
+
+<section class="max-w-7xl mx-auto py-24 px-6">
+  <h2 class="text-4xl font-bold text-center m-16">Pohledy, které vyprávějí.</h2>
+
+  <div class="grid grid-cols-2 md:grid-cols-4 auto-rows-[200px] gap-4">
+    <!-- Fotka 1 - vysoká -->
+    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer row-span-2">
+      <img src="foto1.jpg" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+      <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
+        <p class="text-white text-lg font-semibold">Popis fotky 1</p>
+      </div>
+    </div>
+
+    <!-- Fotka 2 - standardní -->
+    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer">
+      <img src="foto2.jpg" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+      <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
+        <p class="text-white text-lg font-semibold">Popis fotky 2</p>
+      </div>
+    </div>
+
+    <!-- Fotka 3 - široká -->
+    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer col-span-2">
+      <img src="foto3.jpg" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+      <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
+        <p class="text-white text-lg font-semibold">Popis fotky 3</p>
+      </div>
+    </div>
+
+    <!-- Fotka 4 - standardní -->
+    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer">
+      <img src="foto4.jpg" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+      <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
+        <p class="text-white text-lg font-semibold">Popis fotky 4</p>
+      </div>
+    </div>
+
+    <!-- Fotka 5 - velká -->
+    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer col-span-2 row-span-2">
+      <img src="interier.jpg" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+      <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
+        <p class="text-white text-lg font-semibold">Popis fotky 5</p>
+      </div>
+    </div>
+
+    <!-- Fotka 6 - vysoká -->
+    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer row-span-2">
+      <img src="foto6.jpg" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+      <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
+        <p class="text-white text-lg font-semibold">Popis fotky 6</p>
+      </div>
+    </div>
+
+    <!-- Fotka 7 - standardní -->
+    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer">
+      <img src="foto1.jpg" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+      <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
+        <p class="text-white text-lg font-semibold">Popis fotky 7</p>
+      </div>
+    </div>
+
+    <!-- Fotka 8 - široká -->
+    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer col-span-2">
+      <img src="foto2.jpg" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+      <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
+        <p class="text-white text-lg font-semibold">Popis fotky 8</p>
+      </div>
+    </div>
+
+    <!-- Fotka 9 - standardní -->
+    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer">
+      <img src="foto3.jpg" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+      <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
+        <p class="text-white text-lg font-semibold">Popis fotky 9</p>
+      </div>
+    </div>
+
+    <!-- Fotka 1 - široká -->
+    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer col-span-2">
+      <img src="foto1.jpg" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+      <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
+        <p class="text-white text-lg font-semibold">Popis fotky 1</p>
+      </div>
+    </div>
+
+    <!-- Fotka 2 - standardní -->
+    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer">
+      <img src="foto2.jpg" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+      <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
+        <p class="text-white text-lg font-semibold">Popis fotky 2</p>
+      </div>
+    </div>
+
+    <!-- Fotka 3 - vysoká -->
+    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer row-span-2">
+      <img src="foto3.jpg" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+      <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
+        <p class="text-white text-lg font-semibold">Popis fotky 3</p>
+      </div>
+    </div>
+
+    <!-- Fotka 4 - vysoká -->
+    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer row-span-2">
+      <img src="foto4.jpg" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+      <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
+        <p class="text-white text-lg font-semibold">Popis fotky 4</p>
+      </div>
+    </div>
+
+    <!-- Fotka 5 - velká -->
+    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer col-span-2 row-span-2">
+      <img src="foto5.jpg" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+      <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
+        <p class="text-white text-lg font-semibold">Popis fotky 5</p>
+      </div>
+    </div>
+
+    <!-- Fotka 6 - standardní -->
+    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer">
+      <img src="foto6.jpg" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+      <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
+        <p class="text-white text-lg font-semibold">Popis fotky 6</p>
+      </div>
+    </div>
+
+    <!-- Fotka 7 - široká -->
+    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer col-span-2">
+      <img src="foto1.jpg" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+      <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
+        <p class="text-white text-lg font-semibold">Popis fotky 7</p>
+      </div>
+    </div>
+
+    <!-- Fotka 8 - standardní -->
+    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer">
+      <img src="foto2.jpg" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+      <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
+        <p class="text-white text-lg font-semibold">Popis fotky 8</p>
+      </div>
+    </div>
+
+    <!-- Fotka 9 - standardní -->
+    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer">
+      <img src="foto3.jpg" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+      <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
+        <p class="text-white text-lg font-semibold">Popis fotky 9</p>
+      </div>
+    </div>
+    </div>
+</section>
+
+
+
+<footer class="bg-black text-white py-16 px-8 md:px-24 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+    <div class="mb-8 md:mb-0">
+        <img src="colombia2-white.png" alt="Logo" class="h-20 mb-4 mx-auto md:mx-0">
+    </div>
+    <div class="flex space-x-8">
+        <a href="#" class="text-gray-300 hover:text-white transition-colors duration-200">Instagram</a>
+        <a href="#" class="text-gray-300 hover:text-white transition-colors duration-200">Facebook</a>
+        <a href="#" class="text-gray-300 hover:text-white transition-colors duration-200">Kontakt</a>
+    </div>
+</footer>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+// Menu toggle
+const menuToggle = document.getElementById('menu-toggle');
+const sideMenu = document.getElementById('side-menu');
+const menuItems = document.querySelectorAll('.menu-item');
+const hamburgerLines = document.querySelectorAll('#menu-toggle .hamburger span'); 
+let isMenuOpen = false;
+
+gsap.set(sideMenu, { xPercent: 100 });
+gsap.set(menuItems, { opacity: 0, y: 20 });
+
+function closeMenu() {
+    if (isMenuOpen) {
+        gsap.to(menuItems, { opacity: 0, y: 20, duration: 0.3, stagger: 0.05 });
+        gsap.to(sideMenu, { xPercent: 100, duration: 0.6, delay: 0.2, ease: "power3.inOut" });
+        gsap.to(hamburgerLines[0], { rotate: 0, y: 0, duration: 0.3, backgroundColor: 'white' });
+        gsap.to(hamburgerLines[1], { opacity: 1, duration: 0.3 });
+        gsap.to(hamburgerLines[2], { rotate: 0, y: 0, duration: 0.3, backgroundColor: 'white' });
+        isMenuOpen = false;
+    }
+}
+
+menuToggle.addEventListener('click', () => {
+    if (isMenuOpen) {
+        closeMenu();
+    } else {
+        isMenuOpen = true;
+        gsap.to(sideMenu, { xPercent: 0, duration: 0.6, ease: "power3.inOut" });
+        gsap.to(menuItems, { opacity: 1, y: 0, duration: 0.4, stagger: 0.1, delay: 0.3, ease: "power2.out" });
+        gsap.to(hamburgerLines[0], { rotate: 45, y: 12, duration: 0.3, backgroundColor: 'white' });
+        gsap.to(hamburgerLines[1], { opacity: 0, duration: 0.3 });
+        gsap.to(hamburgerLines[2], { rotate: -45, y: -12, duration: 0.3, backgroundColor: 'white' });
+    }
+});
+
+// Zavření menu při scrollu
+ScrollTrigger.create({
+    start: "top top",
+    onUpdate: (self) => { if (self.direction !== 0 && isMenuOpen) closeMenu(); }
+});
+
+
+gsap.utils.toArray(".group").forEach((item, i) => {
+  gsap.from(item, {
+    scrollTrigger: {
+      trigger: item,
+      start: "top 90%",
+      toggleActions: "play none none reverse"
+    },
+    y: 50,
+    opacity: 0,
+    duration: 0.6,
+    delay: i * 0.1,
+    ease: "power2.out"
+  });
+});
+</script>
+</body>
+</html>
