@@ -229,11 +229,11 @@
 
                     <!-- Design Option 2 -->
                     <label class="voucher-design-option cursor-pointer block">
-                        <input type="radio" name="voucher_design" value="Sauna" required>
+                        <input type="radio" name="voucher_design" value="Oheň" required>
                         <div class="design-card rounded-xl overflow-hidden border-4 border-gray-300 transition-all duration-300 hover:border-black">
                             <img src="images/voucher2.png" alt="Sauna" class="w-full h-45 object-cover">
                             <div class="p-4 bg-white text-center">
-                                <p class="font-semibold text-lg">Sauna</p>
+                                <p class="font-semibold text-lg">Oheň</p>
                             </div>
                         </div>
                     </label>
@@ -453,9 +453,14 @@
         const formData = new FormData(form);
         const data = Object.fromEntries(formData);
 
+  // Get voucher design manually (because radio buttons can be tricky)
+        const selectedDesign = document.querySelector('input[name="voucher_design"]:checked');
+        const voucherDesign = selectedDesign ? selectedDesign.value : 'Nevybráno';
+        
         // Send email using EmailJS
         emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-            voucher_type: data.voucher_type,
+            voucher_type: formData.get('voucher_type'),
+            voucher_design: voucherDesign,
             custom_amount: data.custom_amount || 'N/A',
             full_name: data.full_name,
             email: data.email,
