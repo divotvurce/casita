@@ -74,7 +74,9 @@
 
 <!-- Header -->
 <header id="main-header" class="absolute top-0 left-0 w-full z-50 p-6 flex justify-between items-center transition-colors duration-500">
-   <img src="images/bile-logo-siroke-800x200.png" alt="Logo" class="logo h-16">
+      <a href="index.html" class="block">
+        <img src="images/bile-logo-siroke-800x200.png" alt="Logo" class="logo h-16">
+    </a>
     <button id="menu-toggle" class="z-50 w-12 h-12 flex justify-center items-center">
         <div class="hamburger w-8 h-8 relative cursor-pointer">
             <span class="block absolute w-full h-1 bg-white top-0 transition-all duration-300"></span>
@@ -88,9 +90,9 @@
 <div id="side-menu" class="fixed right-0 top-0 h-full w-full md:w-[30%] bg-white z-40 flex flex-col justify-between shadow-lg p-8">
     <nav class="w-full mt-24">
         <ul class="text-center">
-            <li><a href="vylety.html" class="menu-item text-black hover:text-gray-500 text-4xl md:text-5xl mb-8 block">Okolí</a></li>
             <li><a href="galerie.html" class="menu-item text-black hover:text-gray-500 text-4xl md:text-5xl mb-8 block">Galerie</a></li>
-            <li><a href="cenik.html" class="menu-item text-black hover:text-gray-500 text-4xl md:text-5xl mb-8 block">Ceník</a></li>
+            <li><a href="vouchery.html" class="menu-item text-black hover:text-gray-500 text-4xl md:text-5xl mb-8 block">Vouchery</a></li>
+                        <li><a href="vylety.html" class="menu-item text-black hover:text-gray-500 text-4xl md:text-5xl mb-8 block">Okolí</a></li>
             <li><a href="kontakt.html" class="menu-item text-black hover:text-gray-500 text-4xl md:text-5xl mb-8 block">Kontakt</a></li>
         </ul>
     </nav>
@@ -211,7 +213,7 @@ Každé ráno tu čeká snídaně z potravin od okolních farmářů. Bio surovi
 </section>
 
 <!-- Quote Section -->
-<section id="section4-quote2" class="py-16 px-8 md:px-24 bg-transparent text-center">
+<section id="section4-quote2" class="pt-12 pb-20 px-8 md:px-24 bg-transparent text-center">
     <blockquote class="animate-element text-4xl md:text-6xl text-black">Klid uprostřed přírody.</blockquote>
 </section>
 
@@ -299,11 +301,6 @@ A právě tady se radost z prostých věcí může objevit znovu.
     </div>
 </section>
 
-<!-- Final CTA Heading -->
-<section id="final-cta" class="py-24 px-8 md:px-24 flex flex-col items-center justify-center space-y-12">
-    <h2 class="animate-element text-5xl md:text-7xl lg:text-8xl z-10 text-black text-center">Rezervujte ještě dnes!</h2>
-</section>
-
 <!-- Luxury Collage -->
 <section class="py-32 px-8 md:px-24">
     <div class="relative max-w-6xl mx-auto h-[900px]">
@@ -320,15 +317,20 @@ A právě tady se radost z prostých věcí může objevit znovu.
 </section>
 
 <!-- CTA Section -->
-<section id="cta-section" class="cta-section relative h-[70vh] flex items-end justify-center py-16 px-8 overflow-hidden">
+<section id="cta-section" class="cta-section relative min-h-[55vh] md:h-[70vh] flex items-center justify-center py-16 px-6 md:px-8 overflow-hidden">
     <div class="absolute inset-0 bg-black bg-opacity-40"></div>
-    <div id="cta-box" class="animate-element relative z-10 bg-white p-8 md:p-12 max-w-lg w-full text-center rounded-xl shadow-lg flex flex-col items-center justify-center">
-        <img src="images/ikona.png" alt="Logo" class="h-24 mb-4">
-        <h3 class="text-3xl md:text-4xl mb-4 text-black">Vyberte si svůj termín</h3>
-        <p class="text-lg text-gray-700 mb-6">Objevte dokonalou harmonii luxusu a přírody. Vaše nezapomenutelné chvíle čekají.</p>
-        <a href="#" class="bg-black text-white py-4 px-10 text-lg font-bold rounded-xl shadow-lg hover:bg-gray-500 transition-colors duration-300 inline-block">Zarezervovat</a>
+
+    <div id="cta-box" class="animate-element relative z-10 bg-white p-6 sm:p-8 md:p-12 max-w-md w-full text-center rounded-xl shadow-lg flex flex-col items-center justify-center">
+        <img src="images/ikona.png" alt="Logo" class="h-20 sm:h-24 mb-4">
+        <h3 class="text-2xl sm:text-3xl md:text-4xl mb-4 text-black leading-tight">Vyberte si svůj termín</h3>
+        <p class="text-base sm:text-lg text-gray-700 mb-6">Objevte dokonalou harmonii luxusu a přírody. Vaše nezapomenutelné chvíle čekají.</p>
+
+        <a href="#" class="bg-black text-white py-3 sm:py-4 px-10 text-lg font-bold rounded-xl shadow-lg hover:bg-gray-500 transition-colors duration-300 inline-block w-full sm:w-auto">
+            Zarezervovat
+        </a>
     </div>
 </section>
+
 
 <!-- Footer -->
 <footer class="bg-black text-white py-16 px-8 md:px-24">
@@ -375,7 +377,7 @@ A právě tady se radost z prostých věcí může objevit znovu.
         
         <!-- Right - Links -->
         <div class="flex flex-col md:flex-row justify-center md:justify-end items-center space-y-3 md:space-y-0 md:space-x-6 text-sm">
-            <a href="#" class="text-gray-300 hover:text-white transition-colors duration-200">Rezervace</a>
+            <a href="cenik.html" class="text-gray-300 hover:text-white transition-colors duration-200">Ceník</a>
             <a href="#" class="text-gray-300 hover:text-white transition-colors duration-200">Kontakt</a>
             <a href="#" class="text-gray-300 hover:text-white transition-colors duration-200">Smluvní podmínky</a>
         </div>
