@@ -35,63 +35,129 @@
             font-family: "Varela", sans-serif;
             color: var(--color-primary);
         }
-        .tip-section {
-            padding: 6rem 2rem;
-        }
-        .tip-block {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            margin-bottom: 6rem;
-        }
-        .tip-block:nth-child(even) .tip-image {
-            order: 2;
-        }
-        .tip-block:nth-child(even) .tip-text {
-            order: 1;
-            text-align: right;
-        }
-        .tip-image {
-            flex: 1 1 50%;
-            padding: 1rem;
-            overflow: hidden;
-            border-radius: 1rem;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        }
-        .tip-image img {
+        
+        /* Lightbox Styles */
+        #lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: auto;
-            object-fit: cover;
-            transition: transform 0.5s ease;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
         }
-        .tip-image:hover img {
-            transform: scale(1.05);
+        
+        #lightbox.active {
+            display: flex;
         }
-        .tip-text {
-            flex: 1 1 50%;
-            padding: 1rem 2rem;
+        
+        #lightbox img {
+            max-width: 90%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
         }
-        .tip-text h3 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
+        
+        #lightbox-close {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10000;
         }
-        .tip-text p {
-            font-size: 1.125rem;
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
+        
+        #lightbox-close:hover {
+            background: #f0f0f0;
+            transform: scale(1.1);
         }
-        .tip-text a {
-            display: inline-block;
-            padding: 0.75rem 2rem;
-            background-color: #000;
-            color: #fff;
-            border-radius: 0.75rem;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
+        
+        #lightbox-close::before,
+        #lightbox-close::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 3px;
+            background: black;
         }
-        .tip-text a:hover {
-            background-color: #333;
+        
+        #lightbox-close::before {
+            transform: rotate(45deg);
         }
+        
+        #lightbox-close::after {
+            transform: rotate(-45deg);
+        }
+        
+        /* Navigation Arrows */
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10000;
+        }
+        
+        .lightbox-nav:hover {
+            background: #f0f0f0;
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        #lightbox-prev {
+            left: 30px;
+        }
+        
+        #lightbox-next {
+            right: 30px;
+        }
+        
+        .lightbox-nav svg {
+            width: 30px;
+            height: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            #lightbox-close {
+                top: 15px;
+                right: 15px;
+                width: 40px;
+                height: 40px;
+            }
+            
+            .lightbox-nav {
+                width: 50px;
+                height: 50px;
+            }
+            
+            #lightbox-prev {
+                left: 15px;
+            }
+            
+            #lightbox-next {
+                right: 15px;
+            }
+        }
+        
         @media (max-width: 768px) {
             .tip-block {
                 flex-direction: column;
@@ -136,9 +202,10 @@
 </svg>
 </a>
 <a href="galerie.html" class="text-gray-600 hover:text-black transition-colors duration-200" aria-label="Galerie">
-<svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-</svg>
+  <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.864-1.296A2 2 0 0110.437 4h3.125a2 2 0 011.664.89l.864 1.296A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+  </svg>
 </a>
 <a href="tel:+420602115365" class="text-gray-600 hover:text-black transition-colors duration-200" aria-label="Phone">
 <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -167,87 +234,98 @@
 </div>
 </div>
 
+<!-- Lightbox -->
+<div id="lightbox">
+    <div id="lightbox-close"></div>
+    <div id="lightbox-prev" class="lightbox-nav">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+    </div>
+    <img id="lightbox-img" src="" alt="Full size image">
+    <div id="lightbox-next" class="lightbox-nav">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+    </div>
+</div>
+
 <section class="max-w-7xl mx-auto py-24 px-6">
   <h2 class="text-4xl font-bold text-center m-16">Pohledy, které vyprávějí.</h2>
 
   <div class="grid grid-cols-2 md:grid-cols-4 auto-rows-[200px] gap-4">
-    <div class="animate-image overflow-hidden rounded-xl shadow-lg group relative cursor-pointer row-span-2">
-            <img src="images/houpaci-sit.webp" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+    <div class="gallery-item overflow-hidden rounded-xl shadow-lg group relative cursor-pointer row-span-2">
+            <img src="images/houpaci-sit.webp" alt="Houpací síť" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
         </div>
 
-        <div class="animate-image overflow-hidden rounded-xl shadow-lg group relative cursor-pointer">
-            <img src="images/interier-casita.webp" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+        <div class="gallery-item overflow-hidden rounded-xl shadow-lg group relative cursor-pointer">
+            <img src="images/interier-casita.webp" alt="Interiér" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
         </div>
 
-        <div class="animate-image overflow-hidden rounded-xl shadow-lg group relative cursor-pointer col-span-2">
-            <img src="images/domek.webp" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+        <div class="gallery-item overflow-hidden rounded-xl shadow-lg group relative cursor-pointer col-span-2">
+            <img src="images/domek.webp" alt="Domek" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
         </div>
 
-        <div class="animate-image overflow-hidden rounded-xl shadow-lg group relative cursor-pointer">
-            <img src="images/zapad.webp" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+        <div class="gallery-item overflow-hidden rounded-xl shadow-lg group relative cursor-pointer">
+            <img src="images/zapad.webp" alt="Západ slunce" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
         </div>
 
-        <div class="animate-image overflow-hidden rounded-xl shadow-lg group relative cursor-pointer col-span-2 row-span-2">
-            <img src="images/drevo.webp" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+        <div class="gallery-item overflow-hidden rounded-xl shadow-lg group relative cursor-pointer col-span-2 row-span-2">
+            <img src="images/drevo.webp" alt="Dřevo" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
         </div>
 
-        <div class="animate-image overflow-hidden rounded-xl shadow-lg group relative cursor-pointer">
-            <img src="images/brana-casita.webp" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+        <div class="gallery-item overflow-hidden rounded-xl shadow-lg group relative cursor-pointer">
+            <img src="images/brana-casita.webp" alt="Brána" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
         </div>
 
-        <div class="animate-image overflow-hidden rounded-xl shadow-lg group relative cursor-pointer">
-            <img src="images/kniha.webp" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+        <div class="gallery-item overflow-hidden rounded-xl shadow-lg group relative cursor-pointer">
+            <img src="images/kniha.webp" alt="Kniha" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
         </div>
 
-    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer col-span-2">
-      <img src="images/voda-nadrz.webp" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+    <div class="gallery-item overflow-hidden rounded-xl shadow-lg group relative cursor-pointer col-span-2">
+      <img src="images/voda-nadrz.webp" alt="Vodní nádrž" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
     </div>
 
-    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer">
-      <img src="images/terasa.webp" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+    <div class="gallery-item overflow-hidden rounded-xl shadow-lg group relative cursor-pointer">
+      <img src="images/terasa.webp" alt="Terasa" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
     </div>
 
-    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer row-span-2">
-      <img src="images/kuchyne.webp" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+    <div class="gallery-item overflow-hidden rounded-xl shadow-lg group relative cursor-pointer row-span-2">
+      <img src="images/kuchyne.webp" alt="Kuchyně" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
     </div>
 
-    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer row-span-2">
-      <img src="images/koupelna.webp" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+    <div class="gallery-item overflow-hidden rounded-xl shadow-lg group relative cursor-pointer row-span-2">
+      <img src="images/koupelna.webp" alt="Koupelna" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
     </div>
 
-    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer col-span-2 row-span-2">
-      <img src="images/krb-slunce.webp" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+    <div class="gallery-item overflow-hidden rounded-xl shadow-lg group relative cursor-pointer col-span-2 row-span-2">
+      <img src="images/krb-slunce.webp" alt="Krb a slunce" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
     </div>
 
-    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer">
-      <img src="images/ovce.webp" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+    <div class="gallery-item overflow-hidden rounded-xl shadow-lg group relative cursor-pointer">
+      <img src="images/ovce.webp" alt="Ovce" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
     </div>
 
-    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer col-span-2">
-      <img src="images/snidane-casita.webp" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+    <div class="gallery-item overflow-hidden rounded-xl shadow-lg group relative cursor-pointer col-span-2">
+      <img src="images/snidane-casita.webp" alt="Snídaně" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
     </div>
 
-    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer">
-      <img src="images/sauna-casita.webp" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+    <div class="gallery-item overflow-hidden rounded-xl shadow-lg group relative cursor-pointer">
+      <img src="images/sauna-casita.webp" alt="Sauna" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
     </div>
 
-    <div class="overflow-hidden rounded-xl shadow-lg group relative cursor-pointer">
-      <img src="images/vyhled.webp" alt="Popis fotky" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+    <div class="gallery-item overflow-hidden rounded-xl shadow-lg group relative cursor-pointer">
+      <img src="images/vyhled.webp" alt="Výhled" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
     </div>
     </div>
 </section>
 
-
-
 <!-- Footer -->
 <footer class="bg-black text-white py-16 px-8 md:px-24">
     <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-        <!-- Left - Logo -->
         <div class="flex justify-center md:justify-start">
             <img src="images/colombia2-white.png" alt="Logo" class="h-20">
         </div>
-        
-        <!-- Center - Social Icons -->
         <div class="flex justify-center items-center space-x-6">
             <a href="#" class="text-gray-300 hover:text-white transition-colors duration-200" aria-label="Instagram">
                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -281,8 +359,6 @@
                 </svg>
             </a>
         </div>
-        
-        <!-- Right - Links -->
         <div class="flex flex-col md:flex-row justify-center md:justify-end items-center space-y-3 md:space-y-0 md:space-x-6 text-sm">
             <a href="cenik.html" class="text-gray-300 hover:text-white transition-colors duration-200">Ceník</a>
             <a href="kontakt.html" class="text-gray-300 hover:text-white transition-colors duration-200">Kontakt</a>
@@ -328,26 +404,88 @@ menuToggle.addEventListener('click', () => {
     }
 });
 
-// Zavření menu při scrollu
 ScrollTrigger.create({
     start: "top top",
     onUpdate: (self) => { if (self.direction !== 0 && isMenuOpen) closeMenu(); }
 });
 
-
+// Gallery GSAP animations
 gsap.utils.toArray(".group").forEach((item, i) => {
   gsap.from(item, {
     scrollTrigger: {
       trigger: item,
-      start: "top 90%",
-      toggleActions: "play none none reverse"
-    },
-    y: 50,
-    opacity: 0,
-    duration: 0.6,
-    delay: i * 0.1,
-    ease: "power2.out"
-  });
+      start : "top 90%",
+toggleActions: "play none none reverse"
+},
+y: 50,
+opacity: 0,
+duration: 0.6,
+delay: i * 0.1,
+ease: "power2.out"
+});
+});
+// ========================================
+// LIGHTBOX FUNCTIONALITY
+// ========================================
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+const lightboxClose = document.getElementById('lightbox-close');
+const lightboxPrev = document.getElementById('lightbox-prev');
+const lightboxNext = document.getElementById('lightbox-next');
+const galleryItems = document.querySelectorAll('.gallery-item img');
+let currentIndex = 0;
+const images = Array.from(galleryItems).map(img => img.src);
+// Open lightbox
+galleryItems.forEach((item, index) => {
+item.addEventListener('click', () => {
+currentIndex = index;
+showLightbox();
+});
+});
+function showLightbox() {
+lightboxImg.src = images[currentIndex];
+lightbox.classList.add('active');
+document.body.style.overflow = 'hidden'; // Prevent scrolling
+}
+function hideLightbox() {
+lightbox.classList.remove('active');
+document.body.style.overflow = ''; // Restore scrolling
+}
+// Close lightbox
+lightboxClose.addEventListener('click', (e) => {
+e.stopPropagation();
+hideLightbox();
+});
+// Close on background click
+lightbox.addEventListener('click', (e) => {
+if (e.target === lightbox) {
+hideLightbox();
+}
+});
+// Previous image
+lightboxPrev.addEventListener('click', (e) => {
+e.stopPropagation();
+currentIndex = (currentIndex - 1 + images.length) % images.length;
+lightboxImg.src = images[currentIndex];
+});
+// Next image
+lightboxNext.addEventListener('click', (e) => {
+e.stopPropagation();
+currentIndex = (currentIndex + 1) % images.length;
+lightboxImg.src = images[currentIndex];
+});
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+if (!lightbox.classList.contains('active')) return;
+if (e.key === 'Escape') {
+    hideLightbox();
+} else if (e.key === 'ArrowLeft') {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    lightboxImg.src = images[currentIndex];
+} else if (e.key === 'ArrowRight') {
+    currentIndex = (currentIndex + 1) % images.length;
+    lightboxImg.src = images[currentIndex];
+}
 });
 </script>
 </body>
