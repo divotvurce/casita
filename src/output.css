@@ -1366,7 +1366,7 @@
 }
 body {
   background-color: var(--color-secondary);
-  background-image: url('images/texture3.png');
+  background-image: url('./images/texture3.png');
   background-repeat: repeat;
   background-size: 400px;
   background-attachment: fixed;
@@ -1386,7 +1386,7 @@ body {
   z-index: 0;
 }
 .cta-section {
-  background-image: url('images/trava.webp');
+  background-image: url('./images/trava.webp');
   background-size: cover;
   background-position: center;
 }
