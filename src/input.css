@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Varela&display=swap');
+@import "tailwindcss";
+        
+        :root {
+            --color-primary: #000000;
+            --color-secondary: #f8f8f8;
+            --color-text: #4a5568;
+        }
+
+        body {
+            background-color: var(--color-secondary);
+            background-image: url('/images/texture3.png');
+            background-repeat: repeat;
+            background-size: 400px;
+            background-attachment: fixed;
+            font-family: "Varela", sans-serif;
+            color: var(--color-primary);
+        }
+
+        /* Hero Video */
+        .hero-section {
+            position: relative;
+        }
+
+        #hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        /* CTA Background */
+        .cta-section {
+            background-image: url('/images/trava.webp');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Unified Animation Classes - removed initial hidden state */
+        
+        /* Reading Effect Styles */
+        .reading-text {
+            color: #d3d0d0;
+        }
+        
+        .reading-text .word {
+            display: inline-block;
+            padding-right: 4px;
+            color: #d3d0d0;
+            transition: color 0.3s ease;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .grid.grid-cols-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
