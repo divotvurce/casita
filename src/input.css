@@ -32,16 +32,12 @@
             z-index: 0;
         }
 
-        /* CTA Background */
         .cta-section {
-            background-image: url('./images/trava.webp');
+            background-image: url('../images/trava.webp');
             background-size: cover;
             background-position: center;
         }
 
-        /* Unified Animation Classes - removed initial hidden state */
-        
-        /* Reading Effect Styles */
         .reading-text {
             color: #d3d0d0;
         }
@@ -53,13 +49,12 @@
             transition: color 0.3s ease;
         }
 
-        /* Mobile responsiveness */
         @media (max-width: 768px) {
             .grid.grid-cols-2 {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
-        /* Lightbox Styles */
+   
         #lightbox {
             position: fixed;
             top: 0;
