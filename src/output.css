@@ -1386,7 +1386,7 @@ body {
   z-index: 0;
 }
 .cta-section {
-  background-image: url('/images/trava.webp');
+  background-image: url('./images/trava.webp');
   background-size: cover;
   background-position: center;
 }
@@ -1527,7 +1527,6 @@ body {
   padding: 1rem;
   overflow: hidden;
   border-radius: 1rem;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.1);
 }
 .tip-image img {
   width: 100%;
