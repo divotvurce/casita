@@ -17,118 +17,12 @@
 
 <link rel="icon" type="image/png" href="images/favicon.png" />
 <link rel="apple-touch-icon" href="images/favicon.png" />
+<link href="src/output.css" rel="stylesheet">
 
-    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <!-- EmailJS SDK -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Varela&display=swap');
-        
-        :root {
-            --color-primary: #000000;
-            --color-secondary: #f8f8f8;
-            --color-text: #4a5568;
-        }
-
-        body {
-            background-color: var(--color-secondary);
-            background-image: url('images/texture3.png');
-            background-repeat: repeat;
-            background-size: 400px;
-            background-attachment: fixed;
-            font-family: "Varela", sans-serif;
-            color: var(--color-primary);
-        }
-
-        /* Form Styles */
-        .form-input, .form-select, .form-textarea {
-            width: 100%;
-            padding: 14px 20px;
-            border: 2px solid #e5e5e5;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            font-family: 'Varela', sans-serif;
-            background: white;
-        }
-        
-        .form-input:focus, .form-select:focus, .form-textarea:focus {
-            outline: none;
-            border-color: #000;
-            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Radio Button Styles */
-        .voucher-option {
-            position: relative;
-            cursor: pointer;
-            padding: 20px;
-            border: 2px solid #e5e5e5;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            background: white;
-        }
-
-        .voucher-option:hover {
-            border-color: #000;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .voucher-option input:checked + label {
-            border-color: #000;
-            background: #f9f9f9;
-        }
-
-        input[type="radio"] {
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #e5e5e5;
-            border-radius: 50%;
-            margin-right: 10px;
-            position: relative;
-            cursor: pointer;
-        }
-
-        input[type="radio"]:checked {
-            border-color: #000;
-        }
-
-        input[type="radio"]:checked::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #000;
-        }
-
-        /* Success Message */
-        .success-message {
-            display: none;
-            padding: 20px;
-            background: #d4edda;
-            border: 2px solid #c3e6cb;
-            border-radius: 12px;
-            color: #155724;
-            margin-top: 20px;
-        }
-
-        .error-message {
-            display: none;
-            padding: 20px;
-            background: #f8d7da;
-            border: 2px solid #f5c6cb;
-            border-radius: 12px;
-            color: #721c24;
-            margin-top: 20px;
-        }
-    </style>
 </head>
 <body>
 
@@ -220,7 +114,7 @@
                         <div>
                             <h3 class="text-xl font-bold mb-2">Třídenní odpočinek</h3>
                             <p class="text-gray-600 text-sm mb-2">2 noci pro 2 osoby</p>
-                            <p class="text-2xl font-bold">9200 Kč</p>
+                            <p class="text-2xl font-bold">9 200 Kč</p>
                         </div>
                     </label>
 
