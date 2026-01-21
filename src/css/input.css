@@ -334,3 +334,14 @@
             color: #721c24;
             margin-top: 20px;
         }
+
+        #hero-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    background-color: #000; 
+}

@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "build:css": "npx tailwindcss -i src/css/input.css -o dist/assets/style.css --minify",
-    "copy:js": "cp src/js/main.js dist/assets/main.js",
-    "copy:images": "cp -R src/images dist/images",
+    "copy:js": "cp assets/main.js dist/assets/main.js",
+    "copy:images": "cp -R images dist/images",
     "build": "npm run build:css && npm run copy:js && npm run copy:images"
   },
   "keywords": [],

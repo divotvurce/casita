@@ -85,7 +85,7 @@ const burgerClosedColor = 'white'; // zavřený burger je vždy bílý
 function closeMenu() {
     if (isMenuOpen) {
         gsap.to(menuItems, { opacity: 0, y: 20, duration: 0.3, stagger: 0.05 });
-        gsap.to(sideMenu, { xPercent: 100, duration: 0.6, delay: 0.2, ease: "power3.inOut" });
+        gsap.to(sideMenu, { xPercent: 100, duration: 0.6, delay: 0.2, ease: "power3.inOut"});
 
         gsap.to(hamburgerLines[0], {
             rotate: 0,
