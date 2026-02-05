@@ -263,3 +263,44 @@ gsap.utils.toArray("table tbody tr").forEach((row, i) => {
         ease: "power2.out"
     });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const langSwitch = document.getElementById("lang-switch");
+    const langFlag = document.getElementById("lang-flag");
+
+    if (langSwitch && langFlag) {
+        // 1. Získáme cestu a okamžitě z ní vymažeme .html, pokud tam náhodou je
+        let path = window.location.pathname.replace(".html", "");
+        
+        // 2. Ošetříme prázdnou cestu (root webu) na "/index" pro snazší logiku
+        if (path === "/" || path === "") {
+            path = "/index";
+        }
+
+        // 3. Detekce: Končí cesta na "-en"?
+        const isEnglish = path.endsWith("-en");
+
+        if (isEnglish) {
+            // --- AKTUALNĚ JSME V ANGLIČTINĚ ---
+            // Nastavíme vlajku na CZ (protože chceme přepnout zpět)
+            langFlag.src = "/images/flags/cz.svg";
+            langFlag.alt = "Česky";
+
+            // Odstraníme "-en" (z "/kontakt-en" se stane "/kontakt")
+            let targetPath = path.slice(0, -3); 
+            
+            // Pokud je výsledkem "/index", pošleme to na čisté "/"
+            langSwitch.href = (targetPath === "/index") ? "/" : targetPath;
+
+        } else {
+            // --- AKTUALNĚ JSME V ČEŠTINĚ ---
+            // Nastavíme vlajku na EN
+            langFlag.src = "/images/flags/en.svg";
+            langFlag.alt = "English";
+
+            // Přidáme "-en" (z "/kontakt" se stane "/kontakt-en")
+            // Z "/index" se stane "/index-en"
+            langSwitch.href = path + "-en";
+        }
+    }
+});
