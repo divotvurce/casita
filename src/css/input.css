@@ -5,11 +5,13 @@
             --color-primary: #000000;
             --color-secondary: #f8f8f8;
             --color-text: #4a5568;
+            --bg-texture: url('/images/texture3.png');
+    --bg-trava: url('/images/trava.webp');
         }
 
         body {
             background-color: var(--color-secondary);
-            background-image: url('../images/texture3.png');
+            background-image: url('/images/texture3.png');
             background-repeat: repeat;
             background-size: 400px;
             background-attachment: fixed;
@@ -32,7 +34,7 @@
         }
 
         .cta-section {
-            background-image: url('../images/trava.webp');
+            background-image: url('/images/trava.webp');
             background-size: cover;
             background-position: center;
         }

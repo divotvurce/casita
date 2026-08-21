@@ -1,0 +1,23 @@
+{
+  "name": "casitagsap",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build:css": "npx tailwindcss -i src/css/input.css -o dist/assets/style.css --minify",
+    "copy:js": "cp assets/main.js dist/assets/main.js",
+    "copy:images": "cp -R images dist/images",
+    "build": "npm run build:css && npm run copy:js && npm run copy:images"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "autoprefixer": "^10.4.22",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.18"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.18"
+  }
+}
